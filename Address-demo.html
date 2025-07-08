@@ -36,6 +36,8 @@
     <div class="container mt-3">
         <select id="selectCity">
         </select>
+        <select id="selectSite">
+        </select>
         <div id="div1"></div>
     </div>
 
@@ -44,12 +46,15 @@
         crossorigin="anonymous"></script>
     <script>
         const selCity = document.querySelector('#selectCity');
+        const selSite = document.querySelector('#selectSite');
         const myAddress = document.querySelector('#div1');
 
         (async () => {
             const apiUrl = 'http://127.0.0.1:5000/api/cities';
+
             const response = await fetch(apiUrl);
             const datas = await response.json();
+
 
             //讀資料
             const opts = datas.map((city, index) => {
@@ -59,6 +64,9 @@
             })
             selCity.innerHTML = opts.join('');
 
+            //載入鄉鎮區的資料
+            loadSites();
+
             //console.log(opts.join(''));
             //顯示資料 <option value="城市名稱">城市名稱</option>
 
@@ -66,8 +74,30 @@
 
         })();
 
+
+        const loadSites = async () => {
+            const apiUrl = `http://127.0.0.1:5000/api/sites?city=${selCity.value}`
+            const response = await fetch(apiUrl);
+            const datas = await response.json();
+            // console.log(datas);
+
+            //讀資料
+            const opts = datas.map((site, index) => {
+                return (`
+                  <option>${site}</option>
+                `)
+            })
+            selSite.innerHTML = opts.join('');
+
+        }
+
+
+
         selCity.addEventListener('change', () => {
             myAddress.textContent = selCity.value;
+
+            //載入鄉鎮區的資料
+            loadSites();
         })
     </script>
 </body>
