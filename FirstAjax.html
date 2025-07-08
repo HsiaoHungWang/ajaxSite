@@ -46,12 +46,40 @@
         const btnStart = document.querySelector('#buttonStart');
         const divInfo = document.querySelector('#div1');
 
-        btnStart.addEventListener('click', () => {
+        btnStart.addEventListener('click', async () => {
             const apiUrl = 'http://127.0.0.1:5000/api';
-            // console.log(fetch(apiUrl)); //GET http://127.0.0.1:5000/api
-            fetch(apiUrl)
-                .then(response => response.text())
-                .then(data => divInfo.textContent = data);
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`${response.status}`)
+                }
+                const data = await response.text();
+                divInfo.textContent = data;
+            }
+            catch (error) {
+                console.log(error);
+                divInfo.textContent = error.message;
+            }
+
+
+
+
+            // console.log(fetch(apiUrl));  //Promise //GET http://127.0.0.1:5000/api
+            // fetch(apiUrl)
+            //     .then(response => {
+            //         console.log(response)
+            //         if (!response.ok) {
+            //             alert('有錯');
+            //         }
+            //         console.log(response.headers.get('Content-Type'))
+            //         console.log(response.headers.get('Content-Length'))
+            //         return response.text()  //Promise
+            //     })
+            //     .then(data => divInfo.textContent = data);
+
+            // fetch(apiUrl)
+            //     .then(response => response.text())
+            //     .then(data => divInfo.textContent = data);
 
         })
 
