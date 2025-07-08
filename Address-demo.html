@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"> <a
+                    href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"> <svg
+                        class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg> </a>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="Address.html" class="nav-link px-2 text-white">住址</a></li>
+                    <li><a href="Members.html" class="nav-link px-2 text-white">會員管理</a></li>
+                    <li><a href="Spots.html" class="nav-link px-2 text-white">景點瀏覽</a></li>
+                    <li><a href="BarChart.html" class="nav-link px-2 text-white">長條圖</a></li>
+                    <li><a href="Map.html" class="nav-link px-2 text-white">地圖顯示</a></li>
+                </ul>
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search"> <input type="search"
+                        class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+                </form>
+                <div class="text-end"> <button type="button" class="btn btn-outline-light me-2">Login</button> <button
+                        type="button" class="btn btn-warning">Sign-up</button> </div>
+            </div>
+        </div>
+    </header>
+    <div class="container mt-3">
+        <select id="selectCity">
+        </select>
+        <div id="div1"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+    <script>
+        const selCity = document.querySelector('#selectCity');
+        const myAddress = document.querySelector('#div1');
+
+        (async () => {
+            const apiUrl = 'http://127.0.0.1:5000/api/cities';
+            const response = await fetch(apiUrl);
+            const datas = await response.json();
+
+            //讀資料
+            const opts = datas.map((city, index) => {
+                return (`
+                  <option>${city}</option>
+                `)
+            })
+            selCity.innerHTML = opts.join('');
+
+            //console.log(opts.join(''));
+            //顯示資料 <option value="城市名稱">城市名稱</option>
+
+            //console.log(datas);
+
+        })();
+
+        selCity.addEventListener('change', () => {
+            myAddress.textContent = selCity.value;
+        })
+    </script>
+</body>
+
+</html>
