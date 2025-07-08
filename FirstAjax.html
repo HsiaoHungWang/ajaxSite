@@ -35,6 +35,7 @@
     </header>
     <div class="container mt-3">
         <button id="buttonStart" class="btn btn-secondary">Ajax 開始</button>
+        <img id="img1" src="images/loading.gif" alt="loading" style="display:none" />
         <div id="div1"></div>
     </div>
 
@@ -45,9 +46,14 @@
 
         const btnStart = document.querySelector('#buttonStart');
         const divInfo = document.querySelector('#div1');
+        const imgLoading = document.querySelector('#img1');
 
         btnStart.addEventListener('click', async () => {
             const apiUrl = 'http://127.0.0.1:5000/api';
+            //顯示執行中的圖示
+            imgLoading.style.display = "inline";
+            //設定disabled屬性
+            btnStart.setAttribute('disabled', 'disabled');
             try {
                 const response = await fetch(apiUrl);
                 if (!response.ok) {
@@ -59,6 +65,12 @@
             catch (error) {
                 console.log(error);
                 divInfo.textContent = error.message;
+            }
+            finally {
+                //隱藏執行中的圖示
+                imgLoading.style.display = "none";
+                //移除disabled
+                btnStart.removeAttribute('disabled');
             }
 
 
