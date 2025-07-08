@@ -35,6 +35,7 @@
     </header>
     <div class="container mt-3">
         <button id="buttonStart" class="btn btn-secondary">Ajax 開始</button>
+        <button id="buttonStop" class="btn btn-warning">Ajax 停止</button>
         <img id="img1" src="images/loading.gif" alt="loading" style="display:none" />
         <div id="div1"></div>
     </div>
@@ -45,17 +46,26 @@
     <script>
 
         const btnStart = document.querySelector('#buttonStart');
+        const btnStop = document.querySelector('#buttonStop');
         const divInfo = document.querySelector('#div1');
         const imgLoading = document.querySelector('#img1');
+        let aborController;
 
         btnStart.addEventListener('click', async () => {
             const apiUrl = 'http://127.0.0.1:5000/api';
+            //先清除div中的內容
+            divInfo.textContent = '';
             //顯示執行中的圖示
             imgLoading.style.display = "inline";
             //設定disabled屬性
             btnStart.setAttribute('disabled', 'disabled');
             try {
-                const response = await fetch(apiUrl);
+                //建立AbortController物件
+                aborController = new AbortController();
+                const signal = aborController.signal;
+
+
+                const response = await fetch(apiUrl, { signal }); //呼叫API
                 if (!response.ok) {
                     throw new Error(`${response.status}`)
                 }
@@ -63,8 +73,11 @@
                 divInfo.textContent = data;
             }
             catch (error) {
-                console.log(error);
-                divInfo.textContent = error.message;
+                let message = error.message
+                if (error.name === 'AbortError') {
+                    message = "停止fetch()呼叫"
+                }
+                divInfo.textContent = message;
             }
             finally {
                 //隱藏執行中的圖示
@@ -95,6 +108,12 @@
 
         })
 
+        btnStop.addEventListener('click', () => {
+            if (aborController) {
+                //停止fetch的呼叫
+                aborController.abort();
+            }
+        })
     </script>
 </body>
 
