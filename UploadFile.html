@@ -34,8 +34,13 @@
         </div>
     </header>
     <div class="container mt-3">
+
         <input type="file" id="image1">
-        <button id="button1">送出</button>
+        <button type="button" id="button1">送出</button>
+        <hr />
+        <img id="img1" />
+
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
@@ -44,6 +49,7 @@
     <script>
         const btn = document.querySelector('#button1');
         const myFile = document.querySelector('#image1');
+        const myImg = document.querySelector('#img1');
 
 
 
@@ -61,6 +67,15 @@
             const datas = await response.json();
             console.log(datas);
 
+        })
+
+        //預覽選到的圖
+        myFile.addEventListener('change', () => {
+            const reader = new FileReader();
+            reader.readAsDataURL(myFile.files[0]) //讀圖
+            reader.addEventListener('load', () => {
+                myImg.src = reader.result;
+            })
         })
     </script>
 </body>
