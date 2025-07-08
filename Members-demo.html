@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-8"></div>
             <div class="col-4">
-                <form>
+                <form id="memberForm">
                     <div class="mb-3">
                         <label for="Name" class="form-label">姓名</label>
                         <input type="text" class="form-control" id="Name" name="Name">
@@ -67,9 +67,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="formFile" class="form-label">頭像</label>
-                        <input class="form-control" type="file" id="formFile" name="FileName">
+                        <input class="form-control" type="file" id="formFile" name="File">
                     </div>
-                    <button type="button" class="btn btn-primary">送出</button>
+                    <button type="button" class="btn btn-primary" id="buttonSubmit">送出</button>
                 </form>
             </div>
         </div>
@@ -79,6 +79,20 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
     <script>
+        const btnSubmit = document.querySelector('#buttonSubmit');
+
+        btnSubmit.addEventListener('click', async () => {
+            const apiUrl = 'http://127.0.0.1:5000/api/members';  // => Member Class  post()
+            const memberFrm = document.querySelector('#memberForm');
+            const formData = new FormData(memberFrm);
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                body: formData
+            })
+            const data = await response.json();
+            alert(data.message);
+
+        })
 
     </script>
 </body>
