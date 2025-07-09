@@ -41,6 +41,7 @@
                     <div class="mb-3">
                         <label for="Name" class="form-label">姓名</label>
                         <input type="text" class="form-control" id="Name" name="Name">
+                        <div class="alert alert-warning" id="div1">帳號已存在</div>
 
                     </div>
                     <div class="mb-3">
@@ -80,11 +81,21 @@
         crossorigin="anonymous"></script>
     <script>
         const btnSubmit = document.querySelector('#buttonSubmit');
+        const memberFrm = document.querySelector('#memberForm');
+        const InputName = document.querySelector('#Name');
+
+        InputName.addEventListener('blur', () => {
+            //alert(InputName.value);
+            //todo call api 檢查帳號是否存在
+
+        })
+
 
         btnSubmit.addEventListener('click', async () => {
             const apiUrl = 'http://127.0.0.1:5000/api/members';  // => Member Class  post()
-            const memberFrm = document.querySelector('#memberForm');
+
             const formData = new FormData(memberFrm);
+
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 body: formData
