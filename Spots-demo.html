@@ -46,49 +46,9 @@
                 </ul>
             </nav>
         </div>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-body-secondary">Last updated 3 mins ago</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a short card.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional content.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
+        <div id="div1" class="row row-cols-1 row-cols-md-3 g-4">
+
+
         </div>
     </div>
 
@@ -96,7 +56,52 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
     <script>
+        const divSpots = document.querySelector('#div1');
 
+        const search_params = {
+            "keyword": "公園",
+            "category_id": 0,
+            "page": 1,
+            "per_page": 9,
+            "sort_by": "SpotId",
+            "sort_order": "asc"
+        }
+
+        const apiUrl = 'http://127.0.0.1:5000/api/spots';
+
+        const loadSpots = async () => {
+            //JSON轉成QueryString
+            const query = new URLSearchParams(search_params).toString();
+
+            //http://127.0.0.1:5000/api/spots?category_id=3&page=5&sort_order=desc
+            const response = await fetch(`${apiUrl}?${query}`);
+            const datas = await response.json();
+            console.log(datas.total_pages); //共?頁
+            console.log(datas.data);
+
+            const spots = datas.data.map(spot => {
+                const { SpotId, SpotTitle, Address, SpotDescription, SpotImage } = spot;
+                return (`
+                  <div class="col">
+                    <div class="card h-100">
+                        <img src="${SpotImage}" class="card-img-top" alt="${SpotTitle}">
+                        <div class="card-body">
+                            <h5 class="card-title">${SpotId} ${SpotTitle}</h5>
+                            <p class="card-text">${SpotDescription.substring(0, 100)}...</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-body-secondary">${Address}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                `)
+            })
+
+            divSpots.innerHTML = spots.join('');
+        }
+
+        loadSpots();
     </script>
 </body>
 
