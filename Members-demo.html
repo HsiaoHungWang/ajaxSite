@@ -35,7 +35,21 @@
     </header>
     <div class="container mt-3">
         <div class="row">
-            <div class="col-8"></div>
+            <div class="col-8">
+                <table id="table1" class="table table-striped table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>頭像</th>
+                            <th>姓名</th>
+                            <th>電子郵件</th>
+                            <th>年紀</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
             <div class="col-4">
                 <form id="memberForm">
                     <div class="mb-3">
@@ -84,8 +98,36 @@
         const memberFrm = document.querySelector('#memberForm');
         const InputName = document.querySelector('#Name');
         const divInfo = document.querySelector('#div1');
+        const tb = document.querySelector('#table1 tbody');
 
         const apiUrl = 'http://127.0.0.1:5000/api/members';
+
+        //讀取所有會員資料
+        const loadMembers = async () => {
+            const response = await fetch(apiUrl);
+            const datas = await response.json();
+
+
+            const rows = datas.map(member => {
+                const { MemberId, Name, Email, Age, FileName } = member;
+                return (
+                    `<tr>
+                        <td>
+                            <img src="http://127.0.0.1:5000/static/avatars/${FileName}" style="width:150px" /></td>
+                        <td>${Name}</td>
+                        <td>${Email}</td>
+                        <td>${Age}</td>
+                    </tr>
+                    `
+                )
+
+            })
+
+            tb.innerHTML = rows.join('')
+
+        }
+
+        loadMembers();
 
         InputName.addEventListener('blur', async () => {
             //alert(InputName.value);
