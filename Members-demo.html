@@ -113,7 +113,8 @@
                 return (
                     `<tr>
                         <td>
-                            <img src="http://127.0.0.1:5000/static/avatars/${FileName}" style="width:150px" /></td>
+                            <img src="http://127.0.0.1:5000/static/avatars/${FileName}" style="width:150px" />
+                        </td>
                         <td>${Name}</td>
                         <td>${Email}</td>
                         <td>${Age}</td>
@@ -129,6 +130,9 @@
 
         loadMembers();
 
+
+
+        //檢查會員名稱是否存在
         InputName.addEventListener('blur', async () => {
             //alert(InputName.value);
             //todo call api 檢查帳號是否存在
@@ -147,6 +151,7 @@
         })
 
 
+        //新增會員資料
         btnSubmit.addEventListener('click', async () => {
             // const apiUrl = 'http://127.0.0.1:5000/api/members';  // => Member Class  post()
 
@@ -156,11 +161,24 @@
                 method: 'POST',
                 body: formData
             })
-            const data = await response.json();
-            alert(data.message);
+            if (response.ok) {
+                const data = await response.json();
+                alert(data.message);
+                loadMembers();
+                clearInput();
+
+            }
+
 
         })
 
+
+        //清除Input內容
+        const clearInput = () => {
+            document.querySelectorAll('input').forEach(inp => {
+                inp.value = '';
+            })
+        }
     </script>
 </body>
 
