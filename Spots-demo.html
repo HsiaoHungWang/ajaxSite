@@ -60,6 +60,8 @@
     <script>
         const divSpots = document.querySelector('#div1');
         const paging = document.querySelector('.pagination');
+        const inpSearch = document.querySelector('#InputSearch');
+
 
         const search_params = {
             "keyword": "公園",
@@ -125,6 +127,17 @@
             search_params.page = page;
             loadSpots();
         }
+
+        inpSearch.addEventListener('keyup', event => {
+            if (event.key === 'Delete') {
+                inpSearch.value = '';
+            }
+            if (event.which === 13) {
+                search_params.keyword = inpSearch.value;
+                loadSpots();
+
+            }
+        })
 
         loadSpots();
     </script>
