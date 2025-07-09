@@ -91,6 +91,43 @@
         </div>
     </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="MemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">會員修改</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="memberForm">
+                        <div class="mb-3">
+                            <label for="Name1" class="form-label">姓名</label>
+                            <input type="text" class="form-control" id="Name1" name="Name">
+                            <input type="hidden" name="MemberId">
+                        </div>
+                        <div class="mb-3">
+                            <label for="Email1" class="form-label">電子郵件</label>
+                            <input type="email" class="form-control" id="Email1" name="Email">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Age1" class="form-label">年紀</label>
+                            <input type="number" class="form-control" id="Age1" name="Age">
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
@@ -119,7 +156,11 @@
                         <td>${Name}</td>
                         <td>${Email}</td>
                         <td>${Age}</td>
-                        <td><button class="btn btn-danger" onclick="deleteMember(${MemberId})"><i class="bi bi-trash-fill"></i></button></td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#MemberModal">
+                            <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteMember(${MemberId})"><i class="bi bi-trash-fill"></i></button></td>
                     </tr>
                     `
                 )
