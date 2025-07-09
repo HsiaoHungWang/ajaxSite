@@ -105,7 +105,7 @@
                         <div class="mb-3">
                             <label for="Name1" class="form-label">姓名</label>
                             <input type="text" class="form-control" id="Name1" name="Name">
-                            <input type="hidden" name="MemberId">
+                            <input type="hidden" id="MemeberId1" name="MemberId">
                         </div>
                         <div class="mb-3">
                             <label for="Email1" class="form-label">電子郵件</label>
@@ -148,6 +148,7 @@
 
             const rows = datas.map(member => {
                 const { MemberId, Name, Email, Age, FileName } = member;
+                console.log(JSON.stringify(member));
                 return (
                     `<tr>
                         <td>
@@ -157,7 +158,7 @@
                         <td>${Email}</td>
                         <td>${Age}</td>
                         <td>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#MemberModal">
+                            <button type="button" onclick='editMember(${JSON.stringify(member)})' class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#MemberModal">
                             <i class="bi bi-pencil-fill"></i>
                             </button>
                             <button class="btn btn-danger" onclick="deleteMember(${MemberId})"><i class="bi bi-trash-fill"></i></button></td>
@@ -174,6 +175,7 @@
         loadMembers();
 
 
+        //刪除會員
         const deleteMember = async (id) => {
 
             if (!window.confirm('真的要刪除嗎?')) return;
@@ -192,6 +194,15 @@
 
         }
 
+        //編輯會員資料
+        const editMember = (member) => {
+            //console.log(member);
+            document.querySelector('#Name1').value = member.Name;
+            document.querySelector('#Email1').value = member.Email;
+            document.querySelector('#Age1').value = member.Age;
+            document.querySelector('#MemberId1').value = member.MemberId;
+
+        }
         //檢查會員名稱是否存在
         InputName.addEventListener('blur', async () => {
             //alert(InputName.value);
