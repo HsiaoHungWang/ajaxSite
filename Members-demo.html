@@ -101,11 +101,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="memberForm">
+                    <form id="memberEditForm">
                         <div class="mb-3">
                             <label for="Name1" class="form-label">姓名</label>
                             <input type="text" class="form-control" id="Name1" name="Name">
-                            <input type="hidden" id="MemeberId1" name="MemberId">
+                            <input type="hidden" id="MemberId1" name="MemberId">
                         </div>
                         <div class="mb-3">
                             <label for="Email1" class="form-label">電子郵件</label>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary">修改</button>
+                    <button id="buttonUpdate" type="button" class="btn btn-primary">修改</button>
                 </div>
             </div>
         </div>
@@ -137,6 +137,7 @@
         const InputName = document.querySelector('#Name');
         const divInfo = document.querySelector('#div1');
         const tb = document.querySelector('#table1 tbody');
+        const btnUpdate = document.querySelector('#buttonUpdate');
 
         const apiUrl = 'http://127.0.0.1:5000/api/members';
 
@@ -148,7 +149,7 @@
 
             const rows = datas.map(member => {
                 const { MemberId, Name, Email, Age, FileName } = member;
-                console.log(JSON.stringify(member));
+                // console.log(JSON.stringify(member));
                 return (
                     `<tr>
                         <td>
@@ -203,6 +204,43 @@
             document.querySelector('#MemberId1').value = member.MemberId;
 
         }
+        //修改會員資料
+        btnUpdate.addEventListener('click', async () => {
+            //PUT http://127.0.0.1:5000/api/members/3
+
+            const formData = new FormData(document.querySelector('#memberEditForm'));
+            const api = `${apiUrl}/${formData.get('MemberId')}`;
+
+            const response = await fetch(api, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.ok) {
+                alert('修改成功');
+                loadMembers();
+                clearInput();
+
+                //hide modal
+                const memModal = document.querySelector('#MemberModal');
+                const bootModal = bootstrap.Modal.getInstance(memModal);
+                bootModal.hide();
+            }
+
+
+
+
+
+            // for (const pair of formData.entries()) {
+            //     console.log(`${pair[0]}`);
+            //     console.log(`${pair[1]}`);
+            // }
+            // console.log(formData.get('MemberId'))
+
+
+        })
+
+
         //檢查會員名稱是否存在
         InputName.addEventListener('blur', async () => {
             //alert(InputName.value);
