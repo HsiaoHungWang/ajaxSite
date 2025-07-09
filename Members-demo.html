@@ -43,6 +43,7 @@
                             <th>姓名</th>
                             <th>電子郵件</th>
                             <th>年紀</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,6 +119,7 @@
                         <td>${Name}</td>
                         <td>${Email}</td>
                         <td>${Age}</td>
+                        <td><button class="btn btn-danger" onclick="deleteMember(${MemberId})">刪除</button></td>
                     </tr>
                     `
                 )
@@ -131,6 +133,20 @@
         loadMembers();
 
 
+        const deleteMember = async (id) => {
+            //http://127.0.0.1:5000/api/members/12
+            //alert(id)
+            const api = `${apiUrl}/${id}`;
+
+            const response = await fetch(api, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                alert('刪除成功');
+                loadMembers(); //重新載入會員資料
+            }
+
+        }
 
         //檢查會員名稱是否存在
         InputName.addEventListener('blur', async () => {
@@ -164,8 +180,8 @@
             if (response.ok) {
                 const data = await response.json();
                 alert(data.message);
-                loadMembers();
-                clearInput();
+                loadMembers(); //重新讀取會員資料
+                clearInput();  //清除Input內容
 
             }
 
@@ -178,6 +194,7 @@
             document.querySelectorAll('input').forEach(inp => {
                 inp.value = '';
             })
+            divInfo.textContent = '';
         }
     </script>
 </body>
