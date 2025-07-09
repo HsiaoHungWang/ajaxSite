@@ -41,7 +41,7 @@
                     <div class="mb-3">
                         <label for="Name" class="form-label">姓名</label>
                         <input type="text" class="form-control" id="Name" name="Name">
-                        <div class="alert alert-warning" id="div1">帳號已存在</div>
+                        <div class="alert alert-warning" id="div1"></div>
 
                     </div>
                     <div class="mb-3">
@@ -83,16 +83,30 @@
         const btnSubmit = document.querySelector('#buttonSubmit');
         const memberFrm = document.querySelector('#memberForm');
         const InputName = document.querySelector('#Name');
+        const divInfo = document.querySelector('#div1');
 
-        InputName.addEventListener('blur', () => {
+        const apiUrl = 'http://127.0.0.1:5000/api/members';
+
+        InputName.addEventListener('blur', async () => {
             //alert(InputName.value);
             //todo call api 檢查帳號是否存在
+            const api = `${apiUrl}/${InputName.value}`; //GET 'http://127.0.0.1:5000/api/members/Nancy1'
+
+            const response = await fetch(api);
+            const data = await response.json();
+
+            if (data.check) {
+                divInfo.textContent = '帳號存在';
+            } else {
+                divInfo.textContent = '帳號不存在';
+            }
+
 
         })
 
 
         btnSubmit.addEventListener('click', async () => {
-            const apiUrl = 'http://127.0.0.1:5000/api/members';  // => Member Class  post()
+            // const apiUrl = 'http://127.0.0.1:5000/api/members';  // => Member Class  post()
 
             const formData = new FormData(memberFrm);
 
