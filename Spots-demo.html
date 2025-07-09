@@ -37,6 +37,14 @@
     <div class="container mt-3">
         <div class="d-flex justify-content-between">
             <div>
+                <select class="form-select" id="selectPerPage">
+                    <option value="6">6</option>
+                    <option value="9" selected>9</option>
+                    <option value="12">12</option>
+                    <option value="18">18</option>
+                </select>
+            </div>
+            <div>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
 
@@ -61,6 +69,7 @@
         const divSpots = document.querySelector('#div1');
         const paging = document.querySelector('.pagination');
         const inpSearch = document.querySelector('#InputSearch');
+        const selPerPage = document.querySelector('#selectPerPage')
 
 
         const search_params = {
@@ -128,6 +137,7 @@
             loadSpots();
         }
 
+        //關鍵字搜尋
         inpSearch.addEventListener('keyup', event => {
             if (event.key === 'Delete') {
                 inpSearch.value = '';
@@ -137,6 +147,12 @@
                 loadSpots();
 
             }
+        })
+
+        //一頁幾筆資料
+        selPerPage.addEventListener('change', () => {
+            search_params.per_page = selPerPage.value;
+            loadSpots();
         })
 
         loadSpots();
