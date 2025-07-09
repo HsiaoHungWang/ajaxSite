@@ -35,12 +35,18 @@
         </div>
     </header>
     <div class="container mt-3">
-        <div>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
+        <div class="d-flex justify-content-between">
+            <div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
 
-                </ul>
-            </nav>
+                    </ul>
+                </nav>
+            </div>
+            <div>
+                <input type="search" class="form-control" id="InputSearch" placeholder="景點搜尋" />
+            </div>
+
         </div>
         <div id="div1" class="row row-cols-1 row-cols-md-3 g-4">
 
@@ -66,6 +72,7 @@
 
         const apiUrl = 'http://127.0.0.1:5000/api/spots';
 
+        //載入景點資料
         const loadSpots = async () => {
             //JSON轉成QueryString
             const query = new URLSearchParams(search_params).toString();
@@ -92,27 +99,31 @@
                             <small class="text-body-secondary">${Address}</small>
                         </div>
                     </div>
-                </div>
-                
+                </div>                
                 `)
             })
 
             divSpots.innerHTML = spots.join('');
         }
-
+        //建立分頁按鈕
         const pagination = pages => {
             let lis = '';
             for (let i = 1; i <= pages; i++) {
                 if (i > 10) break;
                 if (search_params.page === i) {
-                    lis += `<li class="page-item active"><a class="page-link" href="#">${i}</a></li>`
+                    lis += `<li class="page-item active" onclick="pageChange(${i})"><a class="page-link" href="#">${i}</a></li>`
                 } else {
-                    lis += `<li class="page-item"><a class="page-link" href="#">${i}</a></li>`
+                    lis += `<li class="page-item"  onclick="pageChange(${i})"><a class="page-link" href="#">${i}</a></li>`
                 }
             }
 
             paging.innerHTML = lis;
 
+        }
+
+        const pageChange = page => {
+            search_params.page = page;
+            loadSpots();
         }
 
         loadSpots();
